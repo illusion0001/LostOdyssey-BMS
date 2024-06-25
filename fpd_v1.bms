@@ -1,0 +1,29 @@
+get ARCHIVE_END asize
+set FName string "File_"
+set COUNTER 0
+
+#locate first header
+findloc RES_START string "ž*ƒÁ\0*"
+goto RES_START
+savepos RES_START
+#read some bytes some I can use findloc to search for next header
+getdstring DUMMY 0x9
+for
+    set RES_NAME FName
+    math COUNTER += 1
+    findloc HEADER_OFS string "ž*ƒÁ\0*"
+    
+    # for the last Resource file, use EOF as offset
+    if HEADER_OFS == 0 then
+        set HEADER_OFS ARCHIVE_END
+    endif
+    goto HEADER_OFS
+    
+    savepos RES_OFFSET
+    math RES_OFFSET -= RES_START
+    string RES_NAME += COUNTER
+    log RES_NAME RES_START RES_OFFSET
+    
+    savepos RES_START
+    getdstring DUMMY 0x9
+next
