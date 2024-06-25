@@ -1,3 +1,5 @@
+# https://www.gildor.org/smf/index.php/topic,116.msg1229.html#msg1229
+
 get ARCHIVE_END asize
 set FName string "File_"
 set COUNTER 0
